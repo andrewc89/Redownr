@@ -14,6 +14,7 @@ class User(object):
     def __init__(self, user):
         self.user = user
         self.id = user.id
+        self.user_name = user.name
         self.links = []
 
     def _get_submissions(self, limit=5):
