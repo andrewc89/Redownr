@@ -1,5 +1,5 @@
-import praw
 import pyimgur
+from Reddit import Reddit
 
 client_id = "9a387a6750052fa"
 client_secret = "f611bdbcec253c83635527c46ad1ca67047ca722"
@@ -7,12 +7,11 @@ client_secret = "f611bdbcec253c83635527c46ad1ca67047ca722"
 class Redownr: 
 
     def __init__(self):
-        self.r = praw.Reddit(user_agent="redownr")
+        self.reddit = Reddit()
         self.i = pyimgur.Imgur(client_id)
         self.subs = self.load_config("subreddits.txt")
         self.users = self.load_config("users.txt")
         #imgur.get_image("3rYHhEu").download(path="C:\\Users\\acurcie\\Desktop")
-
 
     def load_config(self, file):
         f = open("config/%s" % file)
@@ -20,11 +19,10 @@ class Redownr:
         f.close()
         return contents
 
-    def load_links(self):
-        for s in self.subs:
-            for link in self.r.get_subreddit(s).get_hot(limit=self.limit):
-                print(link.url, link.author, link.title)
-        
+    def load_user_images(self):
+        imgs = []
+        for usr in self.users:
+            self.reddit.get_user(usr).get_images()
 
 def handle_arguments(r):
     import argparse
@@ -38,4 +36,4 @@ def handle_arguments(r):
 if __name__ == "__main__":
     r = Redownr()
     handle_arguments(r)
-    r.load_links()
+    r.load_user_images()
