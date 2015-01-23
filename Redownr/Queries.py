@@ -619,4 +619,4 @@ if __name__ == '__main__':
 	#print q.get_user_comments('1_more_time')
 	#print q.get_posts()
 	#print q.get_zip('littlesugarbaby')
-	print q.get_rip('LoveKitten69')
+	print(q.get_rip('LoveKitten69'))

@@ -378,8 +378,9 @@ class ImageUtils(object):
 				ImageUtils.debug('imgur_highest_res: %s -> %s' % (url, noh))
 				return noh
 		elif not '.' in fname:
-		    # Need to get full-size and extension
-			r = str(ImageUtils.httpy.get(url), encoding='utf8') # had to add encoding to prevent buffer API support error
+			# Need to get full-size and extension
+			r = ImageUtils.httpy.get(url)
+			r = str(r, encoding='utf8') # had to add encoding to prevent buffer API support error
 			if '<meta name="twitter:player:stream"' in r:
 				# GIFV file
 				chunk = ImageUtils.httpy.between(r, '<meta name="twitter:player:stream"', '>')[0]
