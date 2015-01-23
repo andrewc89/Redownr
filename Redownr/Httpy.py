@@ -6,12 +6,12 @@
 
 	Holds commonly-used HTTP/web request/post methods.
 
-	Compatible with Python 2.5, 2.6, 2.7
 """
 
 import time
 
-import urllib2, cookielib, urllib, httplib
+import urllib.request as urllib2, urllib
+from http import cookiejar as cookielib, client as httplib
 from sys import stderr
 
 DOWNLOAD_TIMEOUT = 10
@@ -89,13 +89,13 @@ class Httpy:
 			req = urllib2.Request(url, headers=headers)
 			handle = self.urlopen(req)
 			
-		except Exception, e:
+		except Exception as e:
 			if self.debugging: stderr.write('Httpy: Exception while creating request: %s\n' % str(e))
 			raise e
 
 		try:
 			result = handle.read()
-		except Exception, e:
+		except Exception as e:
 			if self.debugging: stderr.write('Httpy: Exception while reading response: %s\n' % str(e))
 			raise e
 		
@@ -143,7 +143,7 @@ class Httpy:
 				except: pass
 				if self.debugging: stderr.write('Httpy.py: HTTP status %s: %s\n' % (resp.status, resp.reason))
 				return result
-		except Exception, e:
+		except Exception as e:
 			if self.debugging: stderr.write('Httpy.py: Exception: %s: %s\n' % (url, str(e)))
 			if retry > 0:
 				return self.getter(url, headers=headers, retry=retry-1)
@@ -196,7 +196,7 @@ class Httpy:
 			req = self.Request(url, encoded_data, headers)
 			handle = self.urlopen(req)
 			result = handle.read()
-		except Exception, e:
+		except Exception as e:
 			if self.debugging: stderr.write('Httpy.py: Exception: %s: %s\n' % (url, str(e)))
 		return result
 		
@@ -247,7 +247,7 @@ class Httpy:
 				for name, value in resp.getheaders():
 					if self.debugging: stderr.write('Httpy.py: \t"%s"="%s"\n' % (name, value))
 				return ''
-		except Exception, e:
+		except Exception as e:
 			if self.debugging: stderr.write('Httpy.py: Exception: %s: %s\n' % (url, str(e)))
 			return ''
 	
@@ -266,7 +266,7 @@ class Httpy:
 					buf = handle.read(65536)
 					if len(buf) == 0: break
 					outfile.write(buf)
-			except Exception, e:
+			except Exception as e:
 				if self.debugging: stderr.write('Httpy.py: download(%s): %s\n' % (url, str(e)))
 				if retry_count <= retries:
 					if self.debugging: stderr.write('Httpy.py: download(%s): Retrying (%d remain)\n' % (url, retries - retry_count))

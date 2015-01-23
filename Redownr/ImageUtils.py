@@ -45,15 +45,9 @@ class ImageUtils(object):
 		elif '.' in url and url.lower()[url.rfind('.')+1:] in ['mp4', 'flv', 'wmv']:
 			# Direct link to video
 			return ('video', None, [url])
-		elif 'xhamster.com' in url:
-			# xhamster
-			return ImageUtils.get_urls_xhamster(url)
 		elif 'videobam.com' in url:
 			# videobam
 			return ImageUtils.get_urls_videobam(url)
-		elif 'sexykarma.com' in url:
-			# sexykarma
-			return ImageUtils.get_urls_sexykarma(url)
 		elif 'tumblr.com' in url:
 			# tumblr
 			return ImageUtils.get_urls_tumblr(url)
@@ -113,17 +107,6 @@ class ImageUtils(object):
 		return url
 
 	################
-	# XHAMSTER
-	@staticmethod
-	def get_urls_xhamster(url):
-		ImageUtils.debug('xhamster: getting %s' % url)
-		r = ImageUtils.httpy.get(url)
-		if not "<div class='mp4'>" in r:
-			raise Exception('no mp4 found at %s' % url)
-		chunk = ImageUtils.httpy.between(r, "<div class='mp4'>", "</div>")[0]
-		return ('video', None, [ImageUtils.httpy.between(chunk, 'href="', '"')[0]])
-
-	################
 	# VIDEOBAM
 	@staticmethod
 	def get_urls_videobam(url):
@@ -135,18 +118,6 @@ class ImageUtils(object):
 			if not '.mp4' in link: continue
 			return ('video', None, [link.replace('\\', '')])
 		raise Exception('no mp4 found at %s' % url)
-
-	################
-	# SEXYKARMA
-	@staticmethod
-	def get_urls_sexykarma(url):
-		ImageUtils.debug('sexykarma: getting %s' % url)
-		r = ImageUtils.httpy.get(url)
-		if not "url: escape('" in r:
-			raise Exception('no url found at %s' % url)
-		for link in ImageUtils.httpy.between(r, "url: escape('", "'"):
-			return ('video', None, [link])
-		raise Exception('no video found at %s' % url)
 
 	################
 	# TUMBLR
@@ -209,22 +180,11 @@ class ImageUtils(object):
 					download += '?'
 				download += 'client_id=%s' % client_id
 				return ('audio', None, [download])
-		except Exception, e:
+		except Exception as e:
 			from traceback import format_exc
-			print format_exc()
+			print(format_exc())
 			raise Exception('unable to parse json: %s' % str(e))
 		return []
-
-	################
-	# SOUNDGASM
-	@staticmethod
-	def get_urls_soundgasm(url):
-		ImageUtils.debug('soundgasm: getting %s' % url)
-		r = ImageUtils.httpy.get(url)
-		urls = []
-		for link in ImageUtils.httpy.between(r, 'm4a: "', '"'):
-			urls.append(link)
-		return ('audio', None, urls)
 
 	################
 	# VOCAROO
@@ -482,7 +442,7 @@ class ImageUtils(object):
 					(path.getsize(image), ImageUtils.MAXIMUM_THUMBNAIL_SIZE))
 		try:
 			im = Image.open(image)
-		except Exception, e:
+		except Exception as e:
 			raise Exception('failed to create thumbnail: %s' % str(e))
 		(width, height) = im.size
 		if width  > ImageUtils.MAXIMUM_THUMBNAIL_DIM or \
@@ -623,12 +583,12 @@ if __name__ == '__main__':
 	for index,test_url in enumerate(test_urls):
 		(media_type, b, urls) = ImageUtils.get_urls(test_url)
 		if len(urls) == 0:
-			print index, 'no media urls found for %s' % test_url
+			print(index, 'no media urls found for %s' % test_url)
 			from sys import exit
 			exit(1)
-		print index, media_type, b, urls
+		print(index, media_type, b, urls)
 		for i,u in enumerate(urls):
-			print index,i,u
+			print(index,i,u)
 			fname = ImageUtils.get_filename_from_url(u, media_type=media_type)
 			ImageUtils.httpy.download(u, 'test-%d-%d-%s' % (index, i, fname))
 	#ImageUtils.create_thumbnail('test.jpg', 'test_thumb.jpg')

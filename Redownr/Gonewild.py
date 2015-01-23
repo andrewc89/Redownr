@@ -97,7 +97,7 @@ class Gonewild(object):
 				self.db.add_post(child)
 			elif type(child) == Comment:
 				self.db.add_comment(child)
-		except Exception, e:
+		except Exception as e:
 			if 'already exists' not in str(e):
 				self.debug('%s: poll_user: %s' % (child.author, str(e)))
 			return # If we can't add the post/comment to DB, skip it
@@ -120,7 +120,7 @@ class Gonewild(object):
 		self.debug('%s: poll_user: since "%s"' % (user, since_id))
 		try:
 			children = self.reddit.get_user(user, since=since_id)
-		except Exception, e:
+		except Exception as e:
 			if '404: Not Found' in str(e):
 				# User is deleted, mark it as such
 				self.debug('%s: poll_user: user is 404, marking as deleted' % user)
@@ -222,7 +222,7 @@ Permalink: %s
 		# A single URL can contain multiple medias (i.e. albums)
 		try:
 			(media_type, albumname, medias) = ImageUtils.get_urls(url)
-		except Exception, e:
+		except Exception as e:
 			self.debug('%s: process_url: unable to get URLs for %s: %s' % (child.author, url, str(e)))
 			if 'domain not supported' in str(e):
 				# Save domain-not-supported URLs to new file
@@ -269,7 +269,7 @@ Permalink: %s
 				ImageUtils.httpy.download(media, saveas, headers=headers)
 				if path.getsize(saveas) == 503:
 					raise Exception('503b = removed')
-			except Exception, e:
+			except Exception as e:
 				self.debug('%s: process_url: failed to download #%d: %s, moving on' % (child.author, media_index + 1, str(e)))
 				continue
 
@@ -281,7 +281,7 @@ Permalink: %s
 			else:
 				try:
 					(width, height) = ImageUtils.get_dimensions(saveas)
-				except Exception, e:
+				except Exception as e:
 					# If we cannot process the media file, skip it!
 					self.debug('%s: process_url: #%d %s' % (child.author, media_index + 1, str(e)))
 					continue
@@ -293,7 +293,7 @@ Permalink: %s
 					savethumbas = path.join(working_dir, 'thumbs', fname)
 					try:
 						savethumbas = ImageUtils.create_thumbnail(saveas, savethumbas)
-					except Exception, e:
+					except Exception as e:
 						savethumbas = path.join(ImageUtils.get_root(), 'images', 'nothumb.png')
 						self.debug('%s: process_url: failed to create thumb #%d: %s, using default' % (child.author, media_index + 1, str(e)))
 
@@ -358,20 +358,20 @@ Permalink: %s
 				# Scan for updates from friends
 				try:
 					self.poll_friends()
-				except Exception, e:
+				except Exception as e:
 					self.debug('infinite_loop: poll_friends: %s' % str(e))
 					from traceback import format_exc
-					print format_exc()
+					print(format_exc())
 
 			# Poll user if applicable
 			if friend_zone != 'only':
 				try:
 					self.poll_user(user) # Poll user for content
 					self.db.set_config('last_user', user)
-				except Exception, e:
+				except Exception as e:
 					self.debug('infinite_loop: poll_user: %s' % str(e))
 					from traceback import format_exc
-					print format_exc()			
+					print(format_exc())
 
 	def add_top_users(self):
 		users = []
@@ -379,7 +379,7 @@ Permalink: %s
 		self.debug('add_top_users: loading top posts for the week from %s' % ','.join(subs))
 		try:
 			posts = self.reddit.get('http://www.reddit.com/r/%s/top.json?t=week' % '+'.join(subs))
-		except Exception, e:
+		except Exception as e:
 			self.debug('add_top_users: Exception: %s' % str(e))
 			return users
 		for post in posts:
@@ -397,7 +397,7 @@ Permalink: %s
 	def add_friend(self, user):
 		try:
 			self.reddit.add_friend(user)
-		except Exception, e:
+		except Exception as e:
 			self.debug(str(e))
 			return
 
@@ -410,7 +410,7 @@ Permalink: %s
 	def remove_friend(self, user):
 		try:
 			self.reddit.remove_friend(user)
-		except Exception, e:
+		except Exception as e:
 			self.debug(str(e))
 			return
 
@@ -426,7 +426,7 @@ Permalink: %s
 		self.login()
 		try:
 			reddit_friends = self.reddit.get_friends_list()
-		except Exception, e:
+		except Exception as e:
 			self.debug(str(e))
 			reddit_friends = []
 		self.debug('%d total users, %d friends in DB, %d friends on reddit' % (len(db_users), len(db_friends), len(reddit_friends)))
@@ -484,7 +484,7 @@ Permalink: %s
 				output.append(' Url/Text: %s' % selftext)
 			output.append(    '     Date: %s' % strftime('%y-%m-%dT%H:%M:%SZ', gmtime(created)))
 			output.append(    '    Votes: +%d/-%d' % (ups, downs))
-			print '\n'.join(output)
+			print('\n'.join(output))
 
 	def print_comments(self, user):
 		userid = self.db.get_user_id(user)
@@ -495,7 +495,7 @@ Permalink: %s
 			output.append(    '     Date: %s' % strftime('%y-%m-%dT%H:%M:%SZ', gmtime(created)))
 			output.append(    '    Votes: +%d/-%d' % (ups, downs))
 			output.append(    '  Comment: %s' % body.replace('\n\n', '\n').replace('\n', '\n           '))
-			print '\n'.join(output)
+			print('\n'.join(output))
 
 	def exit_if_already_started(self):
 		from commands import getstatusoutput
@@ -512,10 +512,10 @@ Permalink: %s
 			(username, password) = self.db.get_credentials('reddit')
 			try:
 				self.reddit.login(username, password)
-			except Exception, e:
+			except Exception as e:
 				self.debug('login: Failed to login to reddit: %s' % str(e))
 				raise e
-		except Exception, e:
+		except Exception as e:
 			self.debug('login: Failed to get reddit credentials: %s' % str(e))
 			raise e
 
@@ -658,7 +658,7 @@ Arguments can continue multiple values (separated by commas)
 			try:
 				gw.add_excluded_subreddit(sub)
 				gw.debug('Added excluded subreddit: /r/%s' % sub)
-			except Exception, e:
+			except Exception as e:
 				gw.debug('Unable to exclude subreddit /r/%s: %s' % (sub, str(e)))
 	elif args.include:
 		subs = args.include.replace('r/', '').replace('/', '').split(',')
@@ -666,7 +666,7 @@ Arguments can continue multiple values (separated by commas)
 			try:
 				gw.db.remove_excluded_subreddit(sub)
 				gw.debug('Removed excluded subreddit: /r/%s' % sub)
-			except Exception, e:
+			except Exception as e:
 				gw.debug('Unable to remove excluded subreddit /r/%s: %s' % (sub, str(e)))
 
 	elif args.reddit:
@@ -689,7 +689,7 @@ Arguments can continue multiple values (separated by commas)
 				savethumbas = ImageUtils.create_thumbnail(imagepath, savethumbas)
 				gw.db.update('images', 'thumb = ?', 'id = ?', [savethumbas, imageid])
 				gw.debug('created thumbnail %s' % savethumbas)
-			except Exception, e:
+			except Exception as e:
 				savethumbas = path.join(ImageUtils.get_root(), 'images', 'nothumb.png')
 				gw.debug('Backfill-Thumbnails: Failed to create thumb for %s: %s, using nothumb.png' % (imagepath, str(e)))
 		gw.db.commit()
@@ -740,10 +740,10 @@ if __name__ == '__main__':
 	try:
 		if handle_arguments(gw):
 			exit(0)
-	except Exception, e:
+	except Exception as e:
 		gw.debug('\n[!] Error: %s' % str(e.message))
 		from traceback import format_exc
-		print format_exc()
+		print(format_exc())
 
 		from sys import exit
 		exit(1)

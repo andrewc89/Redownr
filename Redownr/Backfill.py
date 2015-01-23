@@ -28,12 +28,12 @@ def backfill_users():
 	index = 0
 	for (userid, username) in ids_and_users:
 		index += 1
-		print '(%d/%d) updating %s...' % (index, len(ids_and_users), username),
+		print('(%d/%d) updating %s...' % (index, len(ids_and_users), username)),
 		stdout.flush()
 		try:
 			ui = Reddit.get_user_info(username)
-		except Exception, e:
-			print str(e)
+		except Exception as e:
+			print(str(e))
 			continue
 		q_user = '''
 			update users 
@@ -43,7 +43,7 @@ def backfill_users():
 				where id = %d
 		''' % (ui.created, ui.name, userid)
 		cur.execute(q_user)
-		print 'done'
+		print('done')
 	
 	cur.close()
 
@@ -73,8 +73,8 @@ def backfill_posts(legacy=True):
 			url = 'http://www.reddit.com/by_id/t3_%s.json' % ',t3_'.join(ids_to_fetch)
 			try:
 				posts = reddit.get(url)
-			except HTTPError, e:
-				print 'HTTPError: %s' % str(e)
+			except HTTPError as e:
+				print('HTTPError: %s' % str(e))
 				posts = []
 			for post in posts:
 				oldpost = {}
@@ -93,7 +93,7 @@ def backfill_posts(legacy=True):
 				update_post(oldpost)
 			db.conn.commit()
 			ids_to_fetch = list()
-			print 'running total: %d' % total
+			print('running total: %d' % total)
 
 	if len(ids_to_fetch) > 0:
 		total += len(ids_to_fetch)
@@ -101,8 +101,8 @@ def backfill_posts(legacy=True):
 		url = 'http://www.reddit.com/by_id/t3_%s.json' % ',t3_'.join(ids_to_fetch)
 		try:
 			posts = reddit.get(url)
-		except HTTPError, e:
-			print 'HTTPError: %s' % str(e)
+		except HTTPError as e:
+			print('HTTPError: %s' % str(e))
 			posts = []
 		for post in posts:
 			oldpost = {}
@@ -120,7 +120,7 @@ def backfill_posts(legacy=True):
 			Reddit.debug('updating post %s by %s' % (post.id, post.author))
 			update_post(oldpost)
 		db.conn.commit()
-	print 'total posts updated: %d' % total
+	print('total posts updated: %d' % total)
 
 def update_post(post):
 	query = '''
@@ -223,7 +223,7 @@ def backfill_last_since():
 		where userid = users.id
 	'''
 	for user,since in cur.execute(query).fetchall():
-		print user,since
+		print(user,since)
 		db.set_last_since_id(user, since)
 
 def backfill_videos():
@@ -246,10 +246,10 @@ def backfill_videos():
 		saveas = '%s.png' % saveas[:saveas.rfind('.')]
 		try:
 			newthumb = ImageUtils.create_thumbnail(image, saveas)
-		except Exception, e:
-			print 'ERROR: %s' % str(e)
+		except Exception as e:
+			print('ERROR: %s' % str(e))
 			continue
-		print 'replacing %s with %s' % (oldthumb, newthumb)
+		print('replacing %s with %s' % (oldthumb, newthumb))
 		q = '''
 			update images
 				set
@@ -259,9 +259,9 @@ def backfill_videos():
 		'''
 		cur.execute(q, (newthumb, imgid))
 		db.commit()
-		print 'removing %s...' % oldthumb,
+		print('removing %s...' % oldthumb),
 		osremove(oldthumb)
-		print 'removed'
+		print('removed')
 	cur.close()
 
 if __name__ == '__main__':
