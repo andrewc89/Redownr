@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-from Httpy    import Httpy
-from os       import path, getcwd, sep, mkdir
-from PIL      import Image # Python Image Library
-from commands import getstatusoutput
-from sys      import stderr
-from time     import strftime, gmtime
+from Httpy      import Httpy
+from os         import path, getcwd, sep, mkdir
+from PIL        import Image # Python Image Library
+from subprocess import getstatusoutput
+from sys        import stderr
+from time       import strftime, gmtime
 
 class ImageUtils(object):
 	logger = stderr
@@ -378,8 +378,8 @@ class ImageUtils(object):
 				ImageUtils.debug('imgur_highest_res: %s -> %s' % (url, noh))
 				return noh
 		elif not '.' in fname:
-			# Need to get full-size and extension
-			r = ImageUtils.httpy.get(url)
+		    # Need to get full-size and extension
+			r = str(ImageUtils.httpy.get(url), encoding='utf8') # had to add encoding to prevent buffer API support error
 			if '<meta name="twitter:player:stream"' in r:
 				# GIFV file
 				chunk = ImageUtils.httpy.between(r, '<meta name="twitter:player:stream"', '>')[0]
@@ -573,7 +573,7 @@ if __name__ == '__main__':
 	#url = 'http://gfycat.com/HandmadePertinentArmedcrab'
 	#url = 'https://vidd.me/xpW'
 	#url = 'https://vid.me/xpW'
-	url = 'http://imgur.com/PNzNzdf' # Ends with ?1
+	url = 'https://imgur.com/Bwfsin7' # Ends with ?1
 	#url = 'http://imgur.com/OZiYY9D' # Does not end with ?1
 	#url = 'http://i.imgur.com/B5TOKc6.gifv'
 	#url = 'http://imgur.com/B5TOKc6'

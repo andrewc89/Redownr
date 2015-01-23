@@ -9,7 +9,7 @@
 from DB      import DB
 from Reddit  import Reddit
 from sys     import exit, stdout
-from urllib2 import HTTPError
+from urllib.request import HTTPError
 from os      import remove as osremove
 from ImageUtils import ImageUtils
 

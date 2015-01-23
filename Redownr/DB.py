@@ -1,13 +1,10 @@
 #!/usr/bin/python
-import time
+import sqlite3, time
 from os import path, listdir
 from sys import stderr
 from shutil import copy2, rmtree
 from Reddit import Comment, Post
 from ImageUtils import ImageUtils
-
-try:                import sqlite3
-except ImportError: import sqlite as sqlite3
 
 SCHEMA = {
 	'newusers' :
