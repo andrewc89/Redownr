@@ -544,8 +544,6 @@ class ImageUtils(object):
 
 if __name__ == '__main__':
 	# Test urls
-	#url = 'http://www.sexykarma.com/gonewild/video/cum-compilation-YIdo9ntfsWo.html'
-	#url = 'http://xhamster.com/movies/1435778/squirting_hard.html'
 	#url = 'http://videobam.com/jcLzr'
 	#url = 'http://alwaysgroundedx.tumblr.com/private/22807448211/tumblr_m3tyhmw3mQ1ruoc8i'
 	#url = 'https://vine.co/v/h6Htgnj7Z5q'
@@ -554,7 +552,6 @@ if __name__ == '__main__':
 	#url = 'http://vidble.com/album/pXpkBBpD'
 	#url = 'http://vidble.com/album/schhngs4'
 	#url = 'http://snd.sc/1d2RCEv'
-	#url = 'http://soundgasm.net/u/sexuallyspecific/F4M-A-week-of-retribution-TD-Challenge-Part-7-The-Finale'
 	#url = 'http://chirb.it/5vyK6D'
 	#url = 'http://vocaroo.com/i/s0umizubFmH6'
 	#url = 'http://imgdoge.com/img-52ed7dd198460.html'
@@ -566,7 +563,6 @@ if __name__ == '__main__':
 	# Direct links
 	#url = 'http://indiestatik.com/wp-content/uploads/2014/03/IMG_0362.jpg'
 	#url = 'https://d1wst0behutosd.cloudfront.net/videos/2296.mp4'
-	#url = 'http://soundgasm.net/sounds/8922312168b99ba4c4c9c294e3ced77a49336c6c.m4a'
 
 	#url = 'http://soundcloud.com/bondgirlaudio/my-f-irst-gwa-post-thank-you'
 	#url = 'http://dayah.imgur.com/kapow'
@@ -574,8 +570,7 @@ if __name__ == '__main__':
 	#url = 'http://gfycat.com/HandmadePertinentArmedcrab'
 	#url = 'https://vidd.me/xpW'
 	#url = 'https://vid.me/xpW'
-	url = 'https://imgur.com/Bwfsin7' # Ends with ?1
-	#url = 'http://imgur.com/OZiYY9D' # Does not end with ?1
+	url = 'https://imgur.com/Bwfsin7'
 	#url = 'http://i.imgur.com/B5TOKc6.gifv'
 	#url = 'http://imgur.com/B5TOKc6'
 	test_urls = [url]
@@ -592,9 +587,4 @@ if __name__ == '__main__':
 			print(index,i,u)
 			fname = ImageUtils.get_filename_from_url(u, media_type=media_type)
 			ImageUtils.httpy.download(u, 'test-%d-%d-%s' % (index, i, fname))
-	#ImageUtils.create_thumbnail('test.jpg', 'test_thumb.jpg')
-	#ImageUtils.create_thumbnail('../test.mp4', '../test_thumb.jpg')
-	# Testing imgur highest-res
-	#print ImageUtils.get_imgur_highest_res('http://i.imgur.com/30GO67h.jpg')
-	#print ImageUtils.get_imgur_highest_res('http://i.imgur.com/30GO67hh.jpg')
 	pass
