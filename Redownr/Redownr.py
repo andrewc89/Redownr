@@ -611,10 +611,10 @@ Arguments can continue multiple values (separated by commas)
 		users = args.remove.replace('u/', '').replace('/', '').split(',')
 		for user in users:
 			if gw.db.user_already_added(user):
-				gw.db.remove_user(user, new=True)
-				gw.debug('Add new user: /u/%s' % user)
+				gw.db.remove_user(user)
+				gw.debug('Remove user: /u/%s' % user)
 			else:
-				gw.debug('Warning: User already added: /u/%s' % user)
+				gw.debug('Warning: User does not exist: /u/%s' % user)
 
 	elif args.friend:
 		users = args.friend.replace('u/', '').replace('/', '').split(',')

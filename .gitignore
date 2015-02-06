@@ -7,3 +7,4 @@ config/
 *.log
 __pycache__/
 Redownr/__pycache__/
+Redownr/content/
