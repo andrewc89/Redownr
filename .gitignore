@@ -6,3 +6,4 @@ config/
 *.db
 *.log
 __pycache__/
+Redownr/__pycache__/
