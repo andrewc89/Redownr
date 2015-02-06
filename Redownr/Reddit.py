@@ -144,8 +144,7 @@ class Reddit(object):
 				'passwd' : password,
 				'api_type' : 'json'
 			}
-		r = Reddit.httpy.post('https://www.reddit.com/api/login/%s' % user, d)
-		print('r: %s' % r)
+		r = str(Reddit.httpy.oldpost('https://www.reddit.com/api/login/%s' % user, d), 'utf-8')
 		if 'WRONG_PASSWORD' in r:
 			raise Exception('login: invalid password')
 		if 'RATELIMIT' in r:
@@ -168,7 +167,7 @@ class Reddit(object):
 		Reddit.wait()
 		try:
 			r = Reddit.httpy.get(url)
-			json = loads(r)
+			json = loads(str(r, 'utf-8'))
 		except Exception as e:
 			Reddit.debug('exception: %s' % str(e))
 			raise e
@@ -196,7 +195,7 @@ class Reddit(object):
 		page = 1
 		while True:
 			try:
-				json = loads(r)
+				json = loads(str(r, 'utf-8'))
 			except Exception as e:
 				Reddit.debug('failed to load JSON: %s\n%s' % (str(e), r))
 				return results

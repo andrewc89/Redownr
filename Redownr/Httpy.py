@@ -22,7 +22,7 @@ class Httpy:
 	"""
 
 	DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:34.0) Gecko/20100101 Firefox/34.0'
-	def __init__(self, user_agent=None, debugging=False):
+	def __init__(self, user_agent=None, debugging=True):
 		"""
 			Sets this class's user agent.
 		"""
@@ -84,7 +84,7 @@ class Httpy:
 			or 'getaddrinfo' fails.
 		"""
 		if not 'User-agent' in headers:
-			headers['User-agent'] = self.user_agent
+			headers = {'User-agent': self.user_agent}
 		
 		try:
 			req = urllib2.Request(url, headers=headers)
@@ -194,7 +194,7 @@ class Httpy:
 		elif type(postdict) == str:
 			encoded_data = postdict
 		try:
-			req = self.Request(url, encoded_data, headers)
+			req = self.Request(url, bytes(encoded_data, 'utf-8'), headers)
 			handle = urllib.request.urlopen(req)
 			result = handle.read()
 		except Exception as e:
@@ -238,7 +238,7 @@ class Httpy:
 			for hkey in headers.keys():
 				req.putheader(hkey, headers[hkey])
 			req.endheaders()
-			req.send(data)
+			req.send(bytes(data, 'utf-8'))
 			resp = req.getresponse()
 			if resp.status == 200:
 				return resp.read()
@@ -316,3 +316,6 @@ class Httpy:
 		
 		return result
 
+if __name__ == '__main__':
+	h = Httpy()
+	print(h.get('http://www.reddit.com/r/diy/top.json'))

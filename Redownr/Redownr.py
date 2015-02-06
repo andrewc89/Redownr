@@ -339,12 +339,12 @@ Permalink: %s
 					self.add_friend(user)
 
 				# Scan for updates from friends
-				try:
-					self.poll_friends()
-				except Exception as e:
-					self.debug('infinite_loop: poll_friends: %s' % str(e))
-					from traceback import format_exc
-					print(format_exc())
+				#try:
+				#	self.poll_friends()
+				#except Exception as e:
+				#	self.debug('infinite_loop: poll_friends: %s' % str(e))
+				#	from traceback import format_exc
+				#	print(format_exc())
 
 			# Poll user if applicable
 			if friend_zone != 'only':
