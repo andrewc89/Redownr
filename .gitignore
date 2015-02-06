@@ -3,3 +3,6 @@
 *.pyproj
 *.pyproj.user
 config/
+*.db
+*.log
+__pycache__/

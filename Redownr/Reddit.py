@@ -144,7 +144,8 @@ class Reddit(object):
 				'passwd' : password,
 				'api_type' : 'json'
 			}
-		r = Reddit.httpy.oldpost('https://www.reddit.com/api/login/%s' % user, d)
+		r = Reddit.httpy.post('https://www.reddit.com/api/login/%s' % user, d)
+		print('r: %s' % r)
 		if 'WRONG_PASSWORD' in r:
 			raise Exception('login: invalid password')
 		if 'RATELIMIT' in r:

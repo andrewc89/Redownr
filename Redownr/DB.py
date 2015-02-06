@@ -24,15 +24,15 @@ SCHEMA = {
 		'rating    integer, \n\t' +
 		'ratings   integer  \n\t',
 
-    'subreddits' :
-        '\n\t' +
-        'id        integer primary key autoincrement, \n\t' +
-        'name      text unique, \n\t' +
-        'sinceid   text, \n\t' +
-        'created   integer, \n\t' + 
+	'subreddits' :
+		'\n\t' +
+		'id        integer primary key autoincrement, \n\t' +
+		'name  text unique, \n\t' +
+		'sinceid   text,    \n\t' +
+		'created   integer, \n\t' + 
 		'updated   integer, \n\t' +
 		'deleted   integer, \n\t' +
-		'blacklist integer, \n\t',
+		'blacklist integer \n\t',
 
 	'posts' :
 		'\n\t' +
@@ -130,7 +130,7 @@ class DB:
 			self.debug('__init__: database file (%s) not found, creating...' % DB_FILE)
 		self.conn = None
 		self.conn = sqlite3.connect(DB_FILE) #TODO CHANGE BACK, encoding='utf-8')
-		self.conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+		self.conn.text_factory = lambda x: str(x, "utf-8", "ignore")
 		# Don't create tables if not supplied.
 		if SCHEMA != None and SCHEMA != {} and len(SCHEMA) > 0:
 			# Create table for every schema given.

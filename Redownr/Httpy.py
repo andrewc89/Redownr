@@ -11,6 +11,7 @@
 import time
 
 import urllib.request as urllib2, urllib
+import urllib.parse
 from http import cookiejar as cookielib, client as httplib
 from sys import stderr
 
@@ -189,12 +190,12 @@ class Httpy:
 		if postdict == None:
 			encoded_data = ''
 		elif type(postdict) == dict:
-			encoded_data = urllib.urlencode(postdict)
+			encoded_data = urllib.parse.urlencode(postdict)
 		elif type(postdict) == str:
 			encoded_data = postdict
 		try:
 			req = self.Request(url, encoded_data, headers)
-			handle = self.urlopen(req)
+			handle = urllib.request.urlopen(req)
 			result = handle.read()
 		except Exception as e:
 			if self.debugging: stderr.write('Httpy.py: Exception: %s: %s\n' % (url, str(e)))
@@ -216,7 +217,7 @@ class Httpy:
 		data = ''
 		if postdict != None and type(postdict) == dict:
 			fixed_dict = self.fix_dict(postdict)
-			data = urllib.urlencode(fixed_dict)
+			data = urllib.parse.urlencode(fixed_dict)
 		elif postdict != None and type(postdict) == str:
 			data = postdict
 		headers['Content-Length'] = len(data)

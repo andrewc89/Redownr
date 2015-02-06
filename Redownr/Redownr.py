@@ -473,7 +473,7 @@ Permalink: %s
 			print('\n'.join(output))
 
 	def exit_if_already_started(self):
-		from commands import getstatusoutput
+		from subprocess import getstatusoutput
 		(status, output) = getstatusoutput('ps aux')
 		running_processes = 0
 		for line in output.split('\n'):
@@ -502,7 +502,7 @@ Permalink: %s
 			'friend_zone' : 'some',
 			'last_user' : ''
 		}
-		for (key,value) in keys.iteritems():
+		for (key,value) in keys.items():
 			if self.db.get_config(key) == None:
 				self.db.set_config(key, value)
 
@@ -710,19 +710,19 @@ Arguments can continue multiple values (separated by commas)
 
 if __name__ == '__main__':
 
-	gw = Gonewild()
-	gw.setup_config()
+	re = Redownr()
+	re.setup_config()
 	try:
-		if handle_arguments(gw):
+		if handle_arguments(re):
 			exit(0)
 	except Exception as e:
-		gw.debug('\n[!] Error: %s' % str(e.message))
+		re.debug('\n[!] Error: %s' % str(e.message))
 		from traceback import format_exc
 		print(format_exc())
 
 		from sys import exit
 		exit(1)
 
-	gw.login()
-	gw.infinite_loop()
+	re.login()
+	re.infinite_loop()
 	
