@@ -305,15 +305,17 @@ class Httpy:
 				['30', '20', '>10']
 		"""
 		result = []
+		start = bytes(start, encoding='utf-8')
+		finish = bytes(finish, encoding='utf-8')
 		i = source.find(start)
 		j = source.find(finish, i + len(start))
 		
 		while i >= 0 and j >= 0:
 			i = i + len(start)
-			result.append(source[i:j])
+			result.append(str(source[i:j], 'utf-8'))
 			i = source.find(start, j + len(finish))
 			j = source.find(finish, i + len(start))
-		
+
 		return result
 
 if __name__ == '__main__':

@@ -238,7 +238,7 @@ class Reddit(object):
 		try:
 			Reddit.wait()
 			r = Reddit.httpy.get(url)
-			json = loads(r)
+			json = loads(str(r, 'utf-8'))
 		except Exception as e:
 			Reddit.debug('exception: %s' % str(e))
 			raise e
@@ -286,7 +286,7 @@ class Reddit(object):
 			try:
 				Reddit.wait()
 				r = Reddit.httpy.get('http://www.reddit.com/user/%s/about.json' % user)
-				json = loads(r)
+				json = loads(str(r, 'utf-8'))
 				if 'data' in json and 'id' in json['data']:
 					return json['data']['id']
 			except Exception as e:
@@ -299,7 +299,6 @@ class Reddit(object):
 		if Reddit.user_id == None:
 			Reddit.wait()
 			r = Reddit.httpy.get('http://www.reddit.com/api/me.json')
-			json = loads(r)
 			if 'data' in json and 'id' in json['data']:
 				Reddit.user_id = 't2_%s' % json['data']['id']
 			else:
@@ -347,7 +346,7 @@ class Reddit(object):
 	def get_friends_list():
 		Reddit.wait()
 		r = Reddit.httpy.get('http://www.reddit.com/prefs/friends.json')
-		json = loads(r)
+		json = loads(str(r, 'utf-8'))
 		if len(json) == 0:
 			raise Exception('no friends list found at /prefs/friends.json: %s' % r)
 
@@ -359,12 +358,14 @@ class Reddit(object):
 		return [x['name'] for x in friend_list]
 
 if __name__ == '__main__':
-	for child in Reddit.get_user('isisdisplaced', since='2st9x1'):
-		if type(child) == Post:
-			if child.selftext != None:
-				print('POST selftext:', Reddit.get_links_from_text(child.selftext), child.permalink()),
-			else:
-				print('POST url:', child.url, child.permalink())
-		elif type(child) == Comment:
-			print('COMMENT', child.body,)
-		print('created: %d' % child.created)
+    r = Reddit()
+    r.login('testjswrapper', 'testjswrapper')
+	#for child in Reddit.get_user('isisdisplaced', since='2st9x1'):
+		#if type(child) == Post:
+			#if child.selftext != None:
+				#print('POST selftext:', Reddit.get_links_from_text(child.selftext), child.permalink()),
+			#else:
+				#print('POST url:', child.url, child.permalink())
+		#elif type(child) == Comment:
+			#print('COMMENT', child.body,)
+		#print('created: %d' % child.created)

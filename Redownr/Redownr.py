@@ -477,7 +477,7 @@ Permalink: %s
 		(status, output) = getstatusoutput('ps aux')
 		running_processes = 0
 		for line in output.split('\n'):
-			if 'python' in line and 'Gonewild.py' in line and not '/bin/sh -c' in line:
+			if 'python' in line and 'Redownr.py' in line and not '/bin/sh -c' in line:
 				running_processes += 1
 		if running_processes > 1:
 			exit(0) # Quit silently if the bot is already running

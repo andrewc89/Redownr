@@ -2,7 +2,7 @@
 
 from Httpy      import Httpy
 from os         import path, getcwd, sep, mkdir
-from PIL        import Image # Python Image Library
+from PIL	import Image # Python Image Library
 from subprocess import getstatusoutput
 from sys        import stderr
 from time       import strftime, gmtime
@@ -570,9 +570,10 @@ if __name__ == '__main__':
 	#url = 'http://gfycat.com/HandmadePertinentArmedcrab'
 	#url = 'https://vidd.me/xpW'
 	#url = 'https://vid.me/xpW'
-	url = 'https://imgur.com/Bwfsin7'
+	#url = 'https://imgur.com/Bwfsin7'
 	#url = 'http://i.imgur.com/B5TOKc6.gifv'
 	#url = 'http://imgur.com/B5TOKc6'
+	url  = 'http://imgur.com/a/TvTca'
 	test_urls = [url]
 
 	ImageUtils.httpy.debugging = True
